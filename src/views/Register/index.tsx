@@ -1,11 +1,11 @@
-import { Button, Card, Checkbox, Flex, Form, Input } from 'antd'
+import { Button, Card, Col, Form, Input, Row } from 'antd'
 import AuthSwitchBtn from '@/components/AuthSwitchBtn'
 import type React from 'react'
 import type { FormProps } from 'antd'
 import type { Rule } from 'antd/es/form'
 import { useCallback } from 'react'
 
-// 表单字段类型
+// type: 表单字段类型
 export type FormFieldsType = {
   username: string
   password: string
@@ -13,17 +13,12 @@ export type FormFieldsType = {
   remember?: string
 }
 
-// onFinish 函数会在表单提交成功时调用
-const onFinish: FormProps<FormFieldsType>['onFinish'] = (values) => {
-  console.log('Success:', values)
-}
-
 // onFinishFailed 函数会在表单提交失败时调用
 const onFinishFailed: FormProps<FormFieldsType>['onFinishFailed'] = (errorInfo) => {
   console.log('Failed:', errorInfo)
 }
 
-// 表单验证规则
+// validate: 表单验证规则
 const FORM_RULES = {
   username: [
     { required: true, message: '请输入用户名!' },
@@ -62,78 +57,86 @@ const Register: React.FC = () => {
     [formRef]
   )
 
+  // onFinish 函数会在表单提交成功时调用
+  const onFinish: FormProps<FormFieldsType>['onFinish'] = (values) => {
+    console.log('Success:', values)
+  }
+
   return (
-    <Flex justify="center" align="center" style={{ width: '100vw', height: '100vh' }}>
-      <Card
-        title="用户注册"
-        extra={<AuthSwitchBtn />}
-        variant="borderless"
-        style={{ width: '40vw' }}
-      >
-        <Flex justify="center" align="center">
-          <Form
-            form={formRef}
-            name="basic"
-            style={{ width: '27vw' }}
-            initialValues={{ remember: false }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
+    <div
+      style={{
+        minHeight: '100vh',
+        padding: '20px',
+        backgroundColor: '#f5f5f5',
+      }}
+    >
+      <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
+        <Col
+          xs={22} // 手机端：占22/24列，留1列边距
+          sm={20} // 小平板：占20/24列
+          md={16} // 中等屏幕：占16/24列
+          lg={12} // 大屏幕：占12/24列
+          xl={10} // 超大屏幕：占10/24列
+          xxl={8} // 超超大屏幕：占8/24列
+        >
+          <Card
+            title="用户注册"
+            extra={<AuthSwitchBtn />}
+            variant="borderless"
+            style={{
+              width: '100%',
+              maxWidth: '500px',
+              minWidth: '320px',
+            }}
           >
-            {/* 用户名字段 */}
-            <Form.Item<FormFieldsType>
-              label="用户名"
-              name="username"
-              rules={FORM_RULES.username}
-              labelCol={{ span: 4 }}
+            <Form
+              form={formRef}
+              name="basic"
+              layout="vertical"
+              initialValues={{ remember: false }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
             >
-              <Input placeholder="请输入用户名" />
-            </Form.Item>
+              {/* 用户名字段 */}
+              <Form.Item<FormFieldsType> label="用户名" name="username" rules={FORM_RULES.username}>
+                <Input placeholder="请输入用户名" size="large" />
+              </Form.Item>
 
-            {/* 密码字段 */}
-            <Form.Item<FormFieldsType>
-              label="密码"
-              name="password"
-              rules={FORM_RULES.password}
-              labelCol={{ span: 4 }}
-            >
-              <Input.Password placeholder="请输入密码" />
-            </Form.Item>
+              {/* 密码字段 */}
+              <Form.Item<FormFieldsType> label="密码" name="password" rules={FORM_RULES.password}>
+                <Input.Password placeholder="请输入密码" size="large" />
+              </Form.Item>
 
-            <Form.Item
-              label="确认密码"
-              name="confirmPwd"
-              dependencies={['password']}
-              hasFeedback
-              labelCol={{ span: 4 }}
-              rules={getConfirmPwdRules()}
-            >
-              <Input.Password />
-            </Form.Item>
-
-            {/* 记住密码字段 */}
-            <Form.Item<FormFieldsType> name="remember" valuePropName="checked" label={null}>
-              <Checkbox>记住我</Checkbox>
-            </Form.Item>
-
-            {/* 登录按钮 */}
-            <Form.Item label={null}>
-              <Button type="primary" htmlType="submit" block>
-                Submit
-              </Button>
-              <Button
-                htmlType="button"
-                onClick={() => formRef.resetFields()}
-                block
-                style={{ marginTop: '10px' }}
+              <Form.Item
+                label="确认密码"
+                name="confirmPwd"
+                dependencies={['password']}
+                hasFeedback
+                rules={getConfirmPwdRules()}
               >
-                Reset
-              </Button>
-            </Form.Item>
-          </Form>
-        </Flex>
-      </Card>
-    </Flex>
+                <Input.Password placeholder="请确认密码" size="large" />
+              </Form.Item>
+
+              {/* 登录按钮 */}
+              <Form.Item label={null}>
+                <Button type="primary" htmlType="submit" block>
+                  Submit
+                </Button>
+                <Button
+                  htmlType="button"
+                  onClick={() => formRef.resetFields()}
+                  block
+                  style={{ marginTop: '10px' }}
+                >
+                  Reset
+                </Button>
+              </Form.Item>
+            </Form>
+          </Card>
+        </Col>
+      </Row>
+    </div>
   )
 }
 

@@ -1,5 +1,6 @@
 import { Navigate } from 'react-router-dom'
 import Login from '@/views/Login'
+import Main from '@/layout/Main'
 import { lazy } from 'react'
 
 // 懒加载路由组件
@@ -20,6 +21,11 @@ const routesConfig = [
     path: '/register',
     element: <Register />,
     title: '注册',
+  },
+  {
+    path: '/home',
+    element: <Main />,
+    title: '首页',
   },
 ]
 
