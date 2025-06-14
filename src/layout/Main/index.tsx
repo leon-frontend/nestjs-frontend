@@ -5,6 +5,12 @@ import MenuNav from '../MenuNav'
 
 const { Header, Content } = Layout
 
+const layoutStyle: React.CSSProperties = {
+  minHeight: '100vh', // 设置最小高度为视口高度
+  width: '100%', // 设置宽度为100%
+  maxWidth: '100%', // 移除最大宽度限制
+}
+
 const headerStyle: React.CSSProperties = {
   textAlign: 'center',
   color: '#fff',
@@ -18,12 +24,6 @@ const contentStyle: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
   minHeight: '100vh', // 确保右侧布局占满全屏高度
-}
-
-const layoutStyle: React.CSSProperties = {
-  minHeight: '100vh', // 设置最小高度为视口高度
-  width: '100%', // 设置宽度为100%
-  maxWidth: '100%', // 移除最大宽度限制
 }
 
 // todo: ------------------- 实现 Main 函数式组件 ---------------------

@@ -1,24 +1,19 @@
-import { Layout, Menu } from 'antd'
 import { useState } from 'react'
-import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from '@ant-design/icons'
+import { useNavigate } from 'react-router-dom'
+import { Layout, Menu } from 'antd'
+import { DesktopOutlined, PieChartOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 import type React from 'react'
 
 const { Sider } = Layout
 
 type MenuItem = Required<MenuProps>['items'][number]
-function getItem(
+const getItem = (
   label: React.ReactNode,
   key: React.Key,
   icon?: React.ReactNode,
   children?: MenuItem[]
-): MenuItem {
+): MenuItem => {
   return {
     key,
     icon,
@@ -27,21 +22,18 @@ function getItem(
   } as MenuItem
 }
 
-const items: MenuItem[] = [
-  getItem('Option 1', '1', <PieChartOutlined />),
-  getItem('Option 2', '2', <DesktopOutlined />),
-  getItem('User', 'sub1', <UserOutlined />, [
-    getItem('Tom', '3'),
-    getItem('Bill', '4'),
-    getItem('Alex', '5'),
-  ]),
-  getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-  getItem('Files', '9', <FileOutlined />),
+// 菜单项的数据
+const menuItems: MenuItem[] = [
+  getItem('首页', '/home', <PieChartOutlined />),
+  getItem('用户管理', '/home/users', <DesktopOutlined />),
+  getItem('角色管理', '/home/roles', <UserOutlined />),
+  getItem('菜单管理', '/home/menus', <TeamOutlined />),
 ]
 
 // todo: ------------------- 实现 MenuNav 函数式组件 ---------------------
 const MenuNav: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false)
+  const navigate = useNavigate()
 
   return (
     <Sider
@@ -53,7 +45,13 @@ const MenuNav: React.FC = () => {
       <div style={{ color: 'white', height: '64px', textAlign: 'center', lineHeight: '64px' }}>
         后台管理系统
       </div>
-      <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+      <Menu
+        theme="dark"
+        defaultSelectedKeys={['1']}
+        mode="inline"
+        items={menuItems}
+        onClick={({ key }) => navigate(key)}
+      />
     </Sider>
   )
 }
