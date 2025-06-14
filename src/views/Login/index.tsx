@@ -2,6 +2,7 @@ import { Button, Card, Checkbox, Col, Form, Input, Row } from 'antd'
 import AuthSwitchBtn from '@/components/AuthSwitchBtn'
 import type React from 'react'
 import type { FormProps } from 'antd'
+import { useNavigate } from 'react-router-dom'
 
 // 表单字段类型
 export type FormFieldsType = {
@@ -35,12 +36,13 @@ const FORM_RULES = {
 
 // todo: ------------------- 实现 Login 函数式组件 ---------------------
 const Login: React.FC = () => {
-  // 获取 From 表单的实例
-  const [formRef] = Form.useForm<FormFieldsType>()
+  const [formRef] = Form.useForm<FormFieldsType>() // 获取 From 表单的实例
+  const navigate = useNavigate() // 实现编程式导航
 
   // formSubmit 函数会在表单提交成功时调用
   const formSubmit: FormProps<FormFieldsType>['onFinish'] = (values) => {
-    console.log('Success:', values)
+    console.log('Login Component Success:', values)
+    navigate('/home') // 跳转到首页
   }
 
   return (
