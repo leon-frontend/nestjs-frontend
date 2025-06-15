@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom'
 import Login from '@/views/Login'
 import { lazy } from 'react'
+import type { RouteConfigItem } from './types'
 
 // 路由组件懒加载
 const Register = lazy(() => import('@/views/Register'))
@@ -11,7 +12,7 @@ const Menus = lazy(() => import('@/views/Menus'))
 const Roles = lazy(() => import('@/views/Roles'))
 
 // 路由配置
-const routesConfig = [
+const routesConfig: RouteConfigItem[] = [
   {
     path: '/',
     element: <Navigate to="/login" />,
@@ -34,22 +35,22 @@ const routesConfig = [
       {
         path: '',
         element: <DashBoard />,
-        title: 'Dashboard',
+        title: '控制台',
       },
       {
-        path: 'users',
+        path: '/home/users',
         element: <Users />,
-        title: 'Users',
+        title: '用户管理',
       },
       {
-        path: 'menus',
+        path: '/home/menus',
         element: <Menus />,
-        title: 'Menus',
+        title: '菜单管理',
       },
       {
-        path: 'roles',
+        path: '/home/roles',
         element: <Roles />,
-        title: 'Roles',
+        title: '角色管理',
       },
     ],
   },

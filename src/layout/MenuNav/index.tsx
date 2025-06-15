@@ -1,14 +1,14 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useCallback, useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Layout, Menu } from 'antd'
-import { DesktopOutlined, PieChartOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons'
+import { HomeOutlined, MenuOutlined, UserOutlined, TeamOutlined } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 import type React from 'react'
 
 const { Sider } = Layout
 
 type MenuItem = Required<MenuProps>['items'][number]
-const getItem = (
+const getMenuItem = (
   label: React.ReactNode,
   key: React.Key,
   icon?: React.ReactNode,
@@ -22,18 +22,36 @@ const getItem = (
   } as MenuItem
 }
 
-// 菜单项的数据
+// dataSource: 菜单项的数据
 const menuItems: MenuItem[] = [
-  getItem('首页', '/home', <PieChartOutlined />),
-  getItem('用户管理', '/home/users', <DesktopOutlined />),
-  getItem('角色管理', '/home/roles', <UserOutlined />),
-  getItem('菜单管理', '/home/menus', <TeamOutlined />),
+  getMenuItem('首页', '/home', <HomeOutlined />),
+  getMenuItem('用户管理', '/home/users', <UserOutlined />),
+  getMenuItem('角色管理', '/home/roles', <TeamOutlined />),
+  getMenuItem('菜单管理', '/home/menus', <MenuOutlined />),
 ]
 
 // todo: ------------------- 实现 MenuNav 函数式组件 ---------------------
 const MenuNav: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false)
+  // 路由相关的 hooks
   const navigate = useNavigate()
+  const { pathname } = useLocation()
+
+  // 定义 state 状态
+  const [collapsed, setCollapsed] = useState<boolean>(false) // 控制菜单的展开和收起
+  const [selectedMenu, setSelectedMenu] = useState<string>('') // 当前选中的菜单项
+
+  // 获取当前路径，用于显示菜单项高亮（支持浏览器刷新）
+  useEffect(() => {
+    setSelectedMenu(pathname) // 监视路由路径的变化，并更新选中的菜单项高亮
+  }, [pathname])
+
+  // 点击菜单项时，实现路由跳转
+  const handleMenuClick = useCallback(
+    ({ key }: { key: string }) => {
+      navigate(key)
+    },
+    [navigate]
+  )
 
   return (
     <Sider
@@ -42,15 +60,24 @@ const MenuNav: React.FC = () => {
       collapsed={collapsed}
       onCollapse={(value) => setCollapsed(value)}
     >
-      <div style={{ color: 'white', height: '64px', textAlign: 'center', lineHeight: '64px' }}>
-        后台管理系统
+      <div
+        style={{
+          fontSize: '22px',
+          color: 'white',
+          height: '64px',
+          textAlign: 'center',
+          lineHeight: '64px',
+          overflow: 'hidden',
+        }}
+      >
+        {collapsed ? '系统' : '后台管理系统'}
       </div>
       <Menu
         theme="dark"
-        defaultSelectedKeys={['1']}
+        selectedKeys={[selectedMenu]} // 使用 selectedKeys 而不是 defaultSelectedKeys
         mode="inline"
         items={menuItems}
-        onClick={({ key }) => navigate(key)}
+        onClick={handleMenuClick}
       />
     </Sider>
   )

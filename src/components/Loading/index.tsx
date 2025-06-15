@@ -1,3 +1,4 @@
+import { Spin } from 'antd'
 import type React from 'react'
 
 // 创建一个加载组件
@@ -11,7 +12,7 @@ const Loading: React.FC = () => {
         height: '90vh',
       }}
     >
-      <div>加载中...</div>
+      <Spin size="large" />
     </div>
   )
 }

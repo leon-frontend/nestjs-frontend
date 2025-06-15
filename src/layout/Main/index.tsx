@@ -1,7 +1,8 @@
 import type React from 'react'
 import { Outlet } from 'react-router-dom'
-import { Breadcrumb, Layout, theme } from 'antd'
+import { Layout, theme } from 'antd'
 import MenuNav from '../MenuNav'
+import BreadNav from '../BreadNav'
 
 const { Header, Content } = Layout
 
@@ -39,7 +40,8 @@ const Main: React.FC = () => {
       <Layout>
         <Header style={headerStyle}>Header</Header>
         <Content style={contentStyle}>
-          <Breadcrumb style={{ margin: '16px' }} items={[{ title: 'User' }, { title: 'Bill' }]} />
+          {/* 面包屑导航 */}
+          <BreadNav />
           <div
             style={{
               margin: '0 16px',
