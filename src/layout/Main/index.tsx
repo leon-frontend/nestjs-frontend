@@ -24,7 +24,6 @@ const headerStyle: React.CSSProperties = {
 const contentStyle: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
-  minHeight: '100vh', // 确保右侧布局占满全屏高度
 }
 
 // todo: ------------------- 实现 Main 函数式组件 ---------------------
@@ -32,6 +31,15 @@ const Main: React.FC = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken() // 获取主题色和圆角大小
+
+  // 主要内容区域的容器样式
+  const mainContentStyle: React.CSSProperties = {
+    margin: '0 16px 16px', // 建议给底部也加上 margin
+    padding: 24,
+    flex: 1,
+    background: colorBgContainer,
+    borderRadius: borderRadiusLG,
+  }
 
   return (
     <Layout style={layoutStyle}>
@@ -42,15 +50,7 @@ const Main: React.FC = () => {
         <Content style={contentStyle}>
           {/* 面包屑导航 */}
           <BreadNav />
-          <div
-            style={{
-              margin: '0 16px',
-              flex: 1, // 关键：让容器占据剩余空间
-              padding: 24,
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
-          >
+          <div style={mainContentStyle}>
             <Outlet />
           </div>
         </Content>

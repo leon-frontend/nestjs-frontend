@@ -41,3 +41,29 @@ const Register: React.FC = () => {
 ]
 ```
 
+# 03. 用户管理页面
+
+根据当前的功能，我们可以将其划分为三个核心组件：
+
+1. `UsersPage.tsx`: **页面容器组件（父组件）**。负责管理整个页面的状态（如用户数据、加载状态）、执行数据请求、处理核心业务逻辑（新增、更新、删除用户的API调用）。
+2. `UsersTable.tsx`: **纯展示组件**。负责接收用户数据并渲染表格。当用户点击“编辑”或“删除”按钮时，它通过 props 回调函数通知父组件。
+3. `UserFormModal.tsx`: **功能组件**。负责渲染模态框和内部的表单。它管理自身的显示/隐藏状态以及表单的内部状态，并在提交时将数据传递给父组件。
+
+## 3.1 表格滚动条 Bug 
+
+- **实现的效果**：当表格高度不超过 70vh 不显示滚动条，当超过 70vh 时才显示滚动条（固定表头）。
+- 当设置 `scroll={{y: xxx}}` 时， antd 会在内部给 `.ant-table-body` 元素添加一个行内样式 `style="height: 70vh; overflow: scroll;"`。该属性会强制浏览器始终显示滚动条（即使内容没有溢出，也会显示一个禁用的滚动条）。
+
+```tsx
+<Table<DataType>
+  dataSource={paginatedData}
+  pagination={false}
+  scroll={{ y: '70vh' }} // 当超过 70vh 时才显示滚动条（固定表头），但是高度没超过 70vh 时也会显示滚动条轨道
+>xxx</Table>
+
+/* 当表格的高度不超过 scroll={{ y: '70vh' }} 时，不显示滚动条 */
+.ant-table-body {
+  overflow-y: auto !important;
+}
+```
+

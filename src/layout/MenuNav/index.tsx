@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Layout, Menu } from 'antd'
 import { HomeOutlined, MenuOutlined, UserOutlined, TeamOutlined } from '@ant-design/icons'
@@ -22,7 +22,7 @@ const getMenuItem = (
   } as MenuItem
 }
 
-// dataSource: 菜单项的数据
+// dataSource: 菜单项的数据。将路由路径作为菜单项的 Key
 const menuItems: MenuItem[] = [
   getMenuItem('首页', '/home', <HomeOutlined />),
   getMenuItem('用户管理', '/home/users', <UserOutlined />),
@@ -38,17 +38,11 @@ const MenuNav: React.FC = () => {
 
   // 定义 state 状态
   const [collapsed, setCollapsed] = useState<boolean>(false) // 控制菜单的展开和收起
-  const [selectedMenu, setSelectedMenu] = useState<string>('') // 当前选中的菜单项
-
-  // 获取当前路径，用于显示菜单项高亮（支持浏览器刷新）
-  useEffect(() => {
-    setSelectedMenu(pathname) // 监视路由路径的变化，并更新选中的菜单项高亮
-  }, [pathname])
 
   // 点击菜单项时，实现路由跳转
-  const handleMenuClick = useCallback(
-    ({ key }: { key: string }) => {
-      navigate(key)
+  const handleMenuClick = useCallback<NonNullable<MenuProps['onClick']>>(
+    (item) => {
+      navigate(item.key)
     },
     [navigate]
   )
@@ -74,7 +68,8 @@ const MenuNav: React.FC = () => {
       </div>
       <Menu
         theme="dark"
-        selectedKeys={[selectedMenu]} // 使用 selectedKeys 而不是 defaultSelectedKeys
+        // 使用 selectedKeys 而不是 defaultSelectedKeys。使用 pathname 控制菜单项高亮
+        selectedKeys={[pathname]}
         mode="inline"
         items={menuItems}
         onClick={handleMenuClick}

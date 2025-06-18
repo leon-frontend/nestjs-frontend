@@ -4,6 +4,7 @@ import axios from 'axios'
 const instance = axios.create({
   baseURL: '/api/v1', // 请求路径的公共前缀
   timeout: 50000, // 请求的超时时间
+  headers: { 'Content-Type': 'application/json;charset=utf-8' },
 })
 
 // 请求拦截器
@@ -22,11 +23,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   function (response) {
     // 如果请求正常返回，则直接返回响应中的数据
-    if (response.status === 200) {
-      return response.data
-    }
-
-    return response
+    return response.data
   },
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger

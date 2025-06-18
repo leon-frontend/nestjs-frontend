@@ -1,0 +1,4 @@
+/* 当表格的高度不超过 scroll={{ y: '70vh' }} 时，不显示滚动条 */
+.ant-table-body {
+  overflow-y: auto !important;
+}
